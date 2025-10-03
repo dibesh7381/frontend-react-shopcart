@@ -4,6 +4,8 @@ import { ProductProvider } from "./contexts/ProductContext";
 import Loader from "./Loader";
 import AddMobileProduct from "./forms/AddMobileProduct";
 import MobileSellerProducts from "./cards/MobileSellerProducts";
+import AddHomeApplianceProduct from "./forms/AddHomeApplianceProduct";
+import HomeApplianceSellerProducts from "./cards/HomeApplianceSellerProducts";
 
 const BACKEND_URL = "http://localhost:8080/auth";
 
@@ -70,12 +72,24 @@ const SellerDashboard = () => {
             </div>
           </div>
 
+          {/* Mobile Seller */}
           {shop.shopType === "Mobile Seller" && token && (
             <ProductProvider user={user} token={token}>
               <AddMobileProduct />
               <div className="mt-6 w-full">
                 <h2 className="text-xl font-bold mb-4 text-center">Your Mobile Products</h2>
                 <MobileSellerProducts />
+              </div>
+            </ProductProvider>
+          )}
+
+          {/* Home Appliance Seller */}
+          {shop.shopType === "Home Appliance" && token && (
+            <ProductProvider user={user} token={token}>
+              <AddHomeApplianceProduct />
+              <div className="mt-6 w-full">
+                <h2 className="text-xl font-bold mb-4 text-center">Your Home Appliance Products</h2>
+                <HomeApplianceSellerProducts />
               </div>
             </ProductProvider>
           )}

@@ -2,21 +2,23 @@ import { useState, useContext, useRef } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import { ProductContext } from "../contexts/ProductContext";
 
-const AddMobileProduct = () => {
+const AddHomeApplianceProduct = () => {
   const { token } = useContext(AuthContext);
   const { addProduct } = useContext(ProductContext);
-  const fileInputRef = useRef(null); // ✅ File input reset ke liye
 
   const [form, setForm] = useState({
     brand: "",
     model: "",
     color: "",
+    productType: "", 
     price: "",
     image: null,
   });
-
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+
+  // Ref for file input
+  const fileInputRef = useRef(null);
 
   const handleChange = (e) => {
     if (e.target.name === "image") {
@@ -31,7 +33,14 @@ const AddMobileProduct = () => {
     setMessage("");
     setError("");
 
-    if (!form.brand || !form.model || !form.color || !form.price || !form.image) {
+    if (
+      !form.brand ||
+      !form.model ||
+      !form.color ||
+      !form.productType ||
+      !form.price ||
+      !form.image
+    ) {
       setError("Please fill all fields and select an image.");
       return;
     }
@@ -40,6 +49,7 @@ const AddMobileProduct = () => {
     formData.append("brand", form.brand);
     formData.append("model", form.model);
     formData.append("color", form.color);
+    formData.append("productType", form.productType);
     formData.append("price", form.price);
     formData.append("image", form.image);
 
@@ -56,9 +66,13 @@ const AddMobileProduct = () => {
 
       if (res.ok && data.success) {
         setMessage("🎉 Product added successfully!");
-        setForm({ brand: "", model: "", color: "", price: "", image: null });
-        fileInputRef.current.value = ""; // ✅ File input reset
-        addProduct(data.data); // Update product list immediately
+        setForm({ brand: "", model: "", color: "", productType: "", price: "", image: null });
+        addProduct(data.data);
+
+        // ✅ Reset file input manually
+        if (fileInputRef.current) {
+          fileInputRef.current.value = "";
+        }
       } else {
         setError(data.message || "Failed to add product.");
       }
@@ -72,7 +86,7 @@ const AddMobileProduct = () => {
     <div className="flex items-center justify-center w-full">
       <div className="w-full max-w-md bg-white p-6 rounded-2xl shadow-lg">
         <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
-          Add Mobile Product
+          Add Home Appliance Product
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -103,6 +117,20 @@ const AddMobileProduct = () => {
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
 
+          <select
+            name="productType"
+            value={form.productType}
+            onChange={handleChange}
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          >
+            <option value="">Select Type</option>
+            <option value="TV">TV</option>
+            <option value="Fridge">Fridge</option>
+            <option value="Cooler">Cooler</option>
+            <option value="AC">AC</option>
+            <option value="Microwave">Microwave</option>
+          </select>
+
           <input
             type="number"
             name="price"
@@ -116,7 +144,7 @@ const AddMobileProduct = () => {
             type="file"
             name="image"
             accept="image/*"
-            ref={fileInputRef} // ✅ Ref attached
+            ref={fileInputRef} // ✅ Add ref here
             onChange={handleChange}
             className="w-full text-gray-700"
           />
@@ -136,4 +164,4 @@ const AddMobileProduct = () => {
   );
 };
 
-export default AddMobileProduct;
+export default AddHomeApplianceProduct;

@@ -1,5 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
+import { ProductProvider } from "./contexts/ProductContext";
+import { CustomerProductProvider } from "./contexts/CustomerProductContext";
 import Signup from "./Signup";
 import Login from "./Login";
 import Profile from "./Profile";
@@ -8,9 +10,12 @@ import About from "./About";
 import Home from "./Home";
 import BecomeSeller from "./BecomeSeller";
 import SellerDashboard from "./SellerDashboard";
+import AllProducts from "./AllProducts";
 
 function App() {
   return (
+    <CustomerProductProvider>
+    <ProductProvider>
     <AuthProvider>
       <Router>
         <Navbar />
@@ -22,9 +27,12 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/become-seller" element={<BecomeSeller />} />
           <Route path="/seller-dashboard" element={<SellerDashboard />} />
+          <Route path="/all-products" element={<AllProducts />} />
         </Routes>
       </Router>
     </AuthProvider>
+    </ProductProvider>
+    </CustomerProductProvider>
   );
 }
 
