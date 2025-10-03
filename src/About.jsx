@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
+import Loader from "./Loader";
 
 const About = () => {
   const [info, setInfo] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchAbout = async () => {
@@ -11,10 +13,14 @@ const About = () => {
         setInfo(json); // backend me data field me about info aa raha hai
       } catch (err) {
         console.log(err);
+      }finally {
+        setLoading(false); // ✅ stop loader after fetch
       }
     };
     fetchAbout();
   }, []);
+
+  if (loading) return <Loader/>
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">

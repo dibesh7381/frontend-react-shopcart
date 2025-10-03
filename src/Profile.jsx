@@ -1,13 +1,15 @@
 import { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "./contexts/AuthContext";
+import Loader from "./Loader"; // ✅ apna loader import kar le
 
 const Profile = () => {
   const { user, token, setUser, logout } = useContext(AuthContext);
   const [form, setForm] = useState({ name: "", email: "", password: "" });
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
-  const navigate = useNavigate(); // ✅ initialize navigate
+  const [loading, setLoading] = useState(false); // ✅ loader ke liye state
+  const navigate = useNavigate();
 
   // Initialize form with user data
   useEffect(() => {
@@ -21,6 +23,7 @@ const Profile = () => {
     e.preventDefault();
     setMessage("");
     setError("");
+    setLoading(true); // ✅ update request ke time loader on
 
     try {
       const res = await fetch("http://localhost:8080/auth/profile", {
@@ -43,12 +46,14 @@ const Profile = () => {
       }
     } catch {
       setError("Update failed! Please try again.");
+    } finally {
+      setLoading(false); // ✅ request complete hone par loader off
     }
   };
 
   const handleLogout = () => {
-    logout();          // ✅ clear context and token
-    navigate("/");     // ✅ redirect to home page
+    logout();
+    navigate("/");
   };
 
   if (!user)
@@ -60,6 +65,15 @@ const Profile = () => {
       </div>
     );
 
+  // ✅ Agar loader true hai toh spinner ya skeleton dikha do
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gray-100">
+        <Loader />
+      </div>
+    );
+  }
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4">
       <div className="w-full max-w-md bg-white p-6 rounded-2xl shadow-lg">
@@ -67,7 +81,6 @@ const Profile = () => {
           Profile
         </h2>
 
-        {/* ---------------- Role-based congratulation message ---------------- */}
         {user.role && (
           <p
             className={`mt-2 text-center text-sm font-semibold ${
@@ -79,7 +92,6 @@ const Profile = () => {
         )}
 
         <form onSubmit={handleUpdate} className="space-y-4 mt-4">
-          {/* Name */}
           <input
             name="name"
             placeholder="Name"
@@ -89,7 +101,6 @@ const Profile = () => {
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
 
-          {/* Email (readonly) */}
           <input
             name="email"
             placeholder="Email"
@@ -98,7 +109,6 @@ const Profile = () => {
             className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed"
           />
 
-          {/* Password */}
           <input
             type="password"
             name="password"
@@ -135,4 +145,5 @@ const Profile = () => {
 };
 
 export default Profile;
+
 

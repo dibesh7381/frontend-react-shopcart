@@ -4,13 +4,16 @@ import { createContext, useState, useEffect } from "react";
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [token, setToken] = useState(localStorage.getItem("token") || "");
+  const [user, setUser] = useState(() => JSON.parse(localStorage.getItem("user")) || null);
+  const [token, setToken] = useState(() => localStorage.getItem("token") || "");
 
   useEffect(() => {
     if (token) {
       localStorage.setItem("token", token);
       fetchProfile();
+    } else {
+      setUser(null);
+      localStorage.removeItem("user");
     }
   }, [token]);
 
@@ -22,12 +25,12 @@ export const AuthProvider = ({ children }) => {
       if (!res.ok) throw new Error("Unauthorized");
 
       const data = await res.json();
-      // ✅ Backend structure: { success, message, data: { name, email } }
       if (data.success && data.data) {
         setUser(data.data);
+        localStorage.setItem("user", JSON.stringify(data.data));
       }
     } catch (err) {
-      console.log(err);
+      console.error(err);
       logout();
     }
   };
@@ -36,6 +39,7 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
     setToken("");
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
   };
 
   return (
@@ -44,3 +48,4 @@ export const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
+
