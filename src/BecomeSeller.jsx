@@ -112,6 +112,7 @@ const BecomeSeller = () => {
             >
               <option value="">Select Type</option>
               <option value="Mobile Seller">Mobile Seller</option>
+              <option value="Grocery Seller">Grocery Seller</option>
               <option value="Fashion Seller">Fashion Seller</option>
               <option value="Home Appliance">Home Appliance</option>
               <option value="Beauty Seller">Beauty Seller</option>

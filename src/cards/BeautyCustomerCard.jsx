@@ -1,16 +1,16 @@
 import { useState, useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 
-const HomeApplianceCustomerCard = ({ product, addToCart }) => {
+const BeautyCustomerCard = ({ product, addToCart }) => {
   const [buying, setBuying] = useState(false);
-  const { user } = useContext(AuthContext); // 👈 get current user
+  const { user } = useContext(AuthContext);
 
-  const isSeller = user?.role === "seller"; // 👈 check role
+  const isSeller = user?.role === "seller";
 
   const handleBuyNow = () => {
     setBuying(true);
-    addToCart(product); // Cart me add
-    alert(`🎉 ${product.brand} ${product.model} added to cart!`);
+    addToCart(product);
+    alert(`🎉 ${product.brand} added to cart!`);
     setBuying(false);
   };
 
@@ -21,7 +21,7 @@ const HomeApplianceCustomerCard = ({ product, addToCart }) => {
         {product.imageUrl ? (
           <img
             src={product.imageUrl}
-            alt={product.brand + " " + product.model}
+            alt={product.brand}
             className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
           />
         ) : (
@@ -32,8 +32,6 @@ const HomeApplianceCustomerCard = ({ product, addToCart }) => {
       {/* Details */}
       <div className="p-5 flex flex-col flex-1">
         <h3 className="text-2xl font-semibold text-gray-800">{product.brand}</h3>
-        <p className="text-gray-600">{product.model}</p>
-        <p className="text-gray-600">Color: {product.color}</p>
         <p className="text-gray-600">Type: {product.productType}</p>
         <p className="text-gray-800 font-bold mt-2">₹ {product.price}</p>
 
@@ -41,7 +39,7 @@ const HomeApplianceCustomerCard = ({ product, addToCart }) => {
         <div className="mt-auto flex flex-col sm:flex-row justify-between items-center pt-4 gap-2">
           <button
             onClick={handleBuyNow}
-            disabled={buying || isSeller} // 👈 disable if seller
+            disabled={buying || isSeller}
             className={`px-4 py-2 rounded-lg w-full sm:w-1/2 transition ${
               isSeller
                 ? "bg-gray-400 cursor-not-allowed"
@@ -52,7 +50,7 @@ const HomeApplianceCustomerCard = ({ product, addToCart }) => {
           </button>
           <button
             onClick={() => addToCart(product)}
-            disabled={isSeller} // 👈 disable if seller
+            disabled={isSeller}
             className={`px-4 py-2 rounded-lg w-full sm:w-1/2 transition ${
               isSeller
                 ? "bg-gray-400 cursor-not-allowed"
@@ -67,4 +65,4 @@ const HomeApplianceCustomerCard = ({ product, addToCart }) => {
   );
 };
 
-export default HomeApplianceCustomerCard;
+export default BeautyCustomerCard;

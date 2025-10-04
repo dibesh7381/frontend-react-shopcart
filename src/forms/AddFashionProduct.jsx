@@ -2,29 +2,31 @@ import { useState, useContext, useRef } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import { ProductContext } from "../contexts/ProductContext";
 
-const AddHomeApplianceProduct = () => {
+const AddFashionProduct = () => {
   const { token } = useContext(AuthContext);
   const { addProduct } = useContext(ProductContext);
 
   const [form, setForm] = useState({
+    category: "",
     brand: "",
-    model: "",
+    productType: "",
+    size: "",
     color: "",
-    productType: "", 
+    quantity: 1,
     price: "",
     image: null,
   });
+
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
-
-  // Ref for file input
   const fileInputRef = useRef(null);
 
   const handleChange = (e) => {
-    if (e.target.name === "image") {
-      setForm({ ...form, image: e.target.files[0] });
+    const { name, value, type, files } = e.target;
+    if (type === "file") {
+      setForm({ ...form, [name]: files[0] });
     } else {
-      setForm({ ...form, [e.target.name]: e.target.value });
+      setForm({ ...form, [name]: value });
     }
   };
 
@@ -34,10 +36,12 @@ const AddHomeApplianceProduct = () => {
     setError("");
 
     if (
+      !form.category ||
       !form.brand ||
-      !form.model ||
-      !form.color ||
       !form.productType ||
+      !form.size ||
+      !form.color ||
+      !form.quantity ||
       !form.price ||
       !form.image
     ) {
@@ -45,19 +49,21 @@ const AddHomeApplianceProduct = () => {
       return;
     }
 
-    const formData = new FormData();
-    formData.append("brand", form.brand);
-    formData.append("model", form.model);
-    formData.append("color", form.color);
-    formData.append("productType", form.productType);
-    formData.append("price", form.price);
-    formData.append("image", form.image);
+    if (!token) {
+      setError("You must be logged in to add a product.");
+      return;
+    }
 
     try {
+      const formData = new FormData();
+      Object.keys(form).forEach((key) => {
+        if (form[key] !== null) formData.append(key, form[key]);
+      });
+
       const res = await fetch("http://localhost:8080/auth/add-product", {
         method: "POST",
         headers: {
-          Authorization: "Bearer " + token,
+          Authorization: `Bearer ${token}`,
         },
         body: formData,
       });
@@ -66,19 +72,26 @@ const AddHomeApplianceProduct = () => {
 
       if (res.ok && data.success) {
         setMessage("🎉 Product added successfully!");
-        setForm({ brand: "", model: "", color: "", productType: "", price: "", image: null });
-        addProduct(data.data);
+        setForm({
+          category: "",
+          brand: "",
+          productType: "",
+          size: "",
+          color: "",
+          quantity: 1,
+          price: "",
+          image: null,
+        });
 
-        // ✅ Reset file input manually
-        if (fileInputRef.current) {
-          fileInputRef.current.value = "";
-        }
+        addProduct(data.data); // update ProductContext
+
+        if (fileInputRef.current) fileInputRef.current.value = "";
       } else {
         setError(data.message || "Failed to add product.");
       }
     } catch (err) {
       console.error(err);
-      setError("Something went wrong!");
+      setError("Something went wrong while adding the product!");
     }
   };
 
@@ -86,72 +99,106 @@ const AddHomeApplianceProduct = () => {
     <div className="flex items-center justify-center w-full">
       <div className="w-full max-w-md bg-white p-6 rounded-2xl shadow-lg">
         <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
-          Add Home Appliance Product
+          Add Fashion Product
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Category */}
+          <select
+            name="category"
+            value={form.category}
+            onChange={handleChange}
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          >
+            <option value="">Select Category</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Kids">Kids</option>
+          </select>
+
+          {/* Brand */}
           <input
             type="text"
             name="brand"
-            placeholder="Brand"
             value={form.brand}
             onChange={handleChange}
+            placeholder="Brand"
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
 
-          <input
-            type="text"
-            name="model"
-            placeholder="Model"
-            value={form.model}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          />
-
-          <input
-            type="text"
-            name="color"
-            placeholder="Color"
-            value={form.color}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          />
-
+          {/* Product Type */}
           <select
             name="productType"
             value={form.productType}
             onChange={handleChange}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
           >
-            <option value="">Select Type</option>
-            <option value="TV">TV</option>
-            <option value="Fridge">Fridge</option>
-            <option value="Cooler">Cooler</option>
-            <option value="AC">AC</option>
-            <option value="Microwave">Microwave</option>
+            <option value="">Select Product Type</option>
+            <option value="Shirts">Shirts</option>
+            <option value="Jeans">Jeans</option>
+            <option value="T-Shirts">T-Shirts</option>
+            <option value="Trackpants">Trackpants</option>
+            <option value="Shoes">Shoes</option>
+            <option value="Shorts">Shorts</option>
+            <option value="Innerwear">Innerwear</option>
           </select>
 
+          {/* Size */}
           <input
-            type="number"
-            name="price"
-            placeholder="Price"
-            value={form.price}
+            type="text"
+            name="size"
+            value={form.size}
             onChange={handleChange}
+            placeholder="Size (e.g., M, L, XL)"
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
 
+          {/* Color */}
+          <input
+            type="text"
+            name="color"
+            value={form.color}
+            onChange={handleChange}
+            placeholder="Color"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          />
+
+          {/* Quantity */}
+          <input
+            type="number"
+            name="quantity"
+            value={form.quantity}
+            onChange={handleChange}
+            min={1}
+            placeholder="Quantity"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          />
+
+          {/* Price */}
+          <input
+            type="number"
+            name="price"
+            value={form.price}
+            onChange={handleChange}
+            min={0}
+            step="0.01"
+            placeholder="Price"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          />
+
+          {/* Image */}
           <input
             type="file"
             name="image"
             accept="image/*"
-            ref={fileInputRef} // ✅ Add ref here
+            ref={fileInputRef}
             onChange={handleChange}
             className="w-full text-gray-700"
           />
 
           <button
             type="submit"
-            className="w-full bg-yellow-500 text-white py-2 rounded-lg font-semibold hover:bg-yellow-600 transition"
+            className="w-full bg-indigo-600 text-white py-2 rounded-lg font-semibold hover:bg-indigo-700 transition"
           >
             Add Product
           </button>
@@ -164,4 +211,4 @@ const AddHomeApplianceProduct = () => {
   );
 };
 
-export default AddHomeApplianceProduct;
+export default AddFashionProduct;

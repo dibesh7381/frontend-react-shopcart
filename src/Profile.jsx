@@ -66,13 +66,15 @@ const Profile = () => {
     );
 
   // ✅ Agar loader true hai toh spinner ya skeleton dikha do
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-100">
-        <Loader />
-      </div>
-    );
-  }
+// ✅ Agar loader true hai toh sirf spinner dikhaye, background page ke saath
+if (loading) {
+  return (
+    <div className="flex items-center justify-center min-h-screen">
+      <Loader />
+    </div>
+  );
+}
+
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4">

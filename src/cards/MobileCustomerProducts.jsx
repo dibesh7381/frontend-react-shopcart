@@ -30,7 +30,6 @@ const MobileCustomerProducts = ({ products, addToCart }) => {
             <h3 className="text-2xl font-semibold text-gray-800">{product.brand}</h3>
             <p className="text-gray-600">{product.model}</p>
             <p className="text-gray-600">Color: {product.color}</p>
-            <p className="text-gray-600">Type: {product.productType}</p>
             <p className="text-gray-800 font-bold mt-2">₹ {product.price}</p>
 
             {/* Buttons */}
