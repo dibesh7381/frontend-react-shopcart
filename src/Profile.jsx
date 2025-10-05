@@ -122,7 +122,7 @@ if (loading) {
 
           <button
             type="submit"
-            className="w-full bg-indigo-600 text-white py-2 rounded-lg font-semibold hover:bg-indigo-700 transition"
+            className="w-full cursor-pointer bg-indigo-600 text-white py-2 rounded-lg font-semibold hover:bg-indigo-700 transition"
           >
             Update Profile
           </button>
@@ -137,7 +137,7 @@ if (loading) {
 
         <button
           onClick={handleLogout}
-          className="mt-6 w-full bg-red-500 text-white py-2 rounded-lg font-semibold hover:bg-red-600 transition"
+          className="mt-6 w-full cursor-pointer bg-red-500 text-white py-2 rounded-lg font-semibold hover:bg-red-600 transition"
         >
           Logout
         </button>

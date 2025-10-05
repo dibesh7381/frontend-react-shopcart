@@ -5,7 +5,8 @@ import HomeApplianceCustomerCard from "./cards/HomeApplianceCustomerCard ";
 import MobileCustomerProducts from "./cards/MobileCustomerProducts";
 import BeautyCustomerCard from "./cards/BeautyCustomerCard";
 import GroceryCustomerCard from "./cards/GroceryCustomerCard";
-import FashionCustomerCard from "./cards/FashionCustomerCard"; // ✅ Fashion
+import FashionCustomerCard from "./cards/FashionCustomerCard";
+import ShoesCustomerCard from "./cards/ShoesCustomerCard"; // ✅ Shoes
 
 const AllProducts = () => {
   const { products, loading, error, addToCart } = useContext(CustomerProductContext);
@@ -33,6 +34,10 @@ const AllProducts = () => {
   const fashionProducts = products.filter(
     (product) => product.shopType === "Fashion Seller"
   );
+
+  const shoesProducts = products.filter(
+    (product) => product.shopType === "Shoes Seller"
+  ); // ✅ Shoes products
 
   return (
     <div className="p-4 space-y-10">
@@ -110,8 +115,25 @@ const AllProducts = () => {
           </div>
         </>
       )}
+
+      {/* ✅ Shoes Shop Section */}
+      {shoesProducts.length > 0 && (
+        <>
+          <h2 className="text-3xl font-bold mb-4">Shoes Products</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {shoesProducts.map((product) => (
+              <ShoesCustomerCard
+                key={product.id}
+                product={product}
+                addToCart={addToCart}
+              />
+            ))}
+          </div>
+        </>
+      )}
     </div>
   );
 };
 
 export default AllProducts;
+

@@ -133,13 +133,13 @@ const BeautySellerProducts = () => {
 
                   <div className="flex flex-col sm:flex-row justify-between mt-3 gap-2">
                     <button
-                      className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition w-full sm:w-1/2"
+                      className="px-4 cursor-pointer py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition w-full sm:w-1/2"
                       onClick={() => submitEdit(product.id)}
                     >
                       Save
                     </button>
                     <button
-                      className="px-4 py-2 bg-gray-300 text-black rounded-lg hover:bg-gray-400 transition w-full sm:w-1/2"
+                      className="px-4 cursor-pointer py-2 bg-gray-300 text-black rounded-lg hover:bg-gray-400 transition w-full sm:w-1/2"
                       onClick={() => setEditingId(null)}
                     >
                       Cancel
@@ -154,13 +154,13 @@ const BeautySellerProducts = () => {
 
                   <div className="mt-auto flex flex-col sm:flex-row justify-between items-center pt-4 gap-2">
                     <button
-                      className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition w-full sm:w-1/2"
+                      className="px-4 cursor-pointer py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition w-full sm:w-1/2"
                       onClick={() => startEdit(product)}
                     >
                       Edit
                     </button>
                     <button
-                      className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition w-full sm:w-1/2"
+                      className="px-4 cursor-pointer py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition w-full sm:w-1/2"
                       onClick={() => deleteProduct(product.id)}
                     >
                       Delete

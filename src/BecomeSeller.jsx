@@ -1,22 +1,25 @@
 import { useContext, useState } from "react";
 import { AuthContext } from "./contexts/AuthContext";
 import Loader from "./Loader";
+import { useNavigate } from "react-router-dom";
 
 const BecomeSeller = () => {
   const { user, token, setUser } = useContext(AuthContext);
   const [shopName, setShopName] = useState("");
   const [shopAddress, setShopAddress] = useState("");
-  const [shopType, setShopType] = useState(""); 
-  const [shopPhoto, setShopPhoto] = useState(null); 
+  const [shopType, setShopType] = useState("");
+  const [shopPhoto, setShopPhoto] = useState(null);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false); // ✅ new state
+  const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleBecomeSeller = async (e) => {
     e.preventDefault();
     setMessage("");
     setError("");
-    setLoading(true); // ✅ show loader
+    setLoading(true);
 
     if (!shopName || !shopAddress || !shopType || !shopPhoto) {
       setError("Please fill all fields and upload a shop photo.");
@@ -49,7 +52,7 @@ const BecomeSeller = () => {
     } catch {
       setError("Failed to become a seller.");
     } finally {
-      setLoading(false); // ✅ hide loader
+      setLoading(false);
     }
   };
 
@@ -61,12 +64,29 @@ const BecomeSeller = () => {
     );
   }
 
+  // ✅ Seller Congratulation Card
   if (user.role === "seller") {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-100">
-        <p className="text-green-600 text-lg font-semibold">
-          You are already a seller!
-        </p>
+      <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4">
+        <div className="bg-white max-w-md w-full rounded-2xl shadow-lg p-6 text-center">
+          <img
+            src={user.shopPhotoUrl || "/default-shop.png"}
+            alt={user.shopName}
+            className="w-32 h-32 object-cover rounded-full mx-auto mb-4 border-4 border-yellow-400 shadow-md"
+          />
+          <h2 className="text-2xl font-bold text-gray-800 mb-2">
+            🎉 Congratulations!
+          </h2>
+          <p className="text-gray-600 mb-4">
+            You are now a seller. Your shop <strong>{user.shopName}</strong> is live!
+          </p>
+          <button
+            onClick={() => navigate("/seller-dashboard")}
+            className="bg-yellow-500 text-white py-2 px-6 rounded-lg font-semibold hover:bg-yellow-600 transition"
+          >
+            Go to Seller Dashboard
+          </button>
+        </div>
       </div>
     );
   }
@@ -79,7 +99,7 @@ const BecomeSeller = () => {
         </h2>
 
         {loading ? (
-          <Loader/>
+          <Loader />
         ) : (
           <form
             onSubmit={handleBecomeSeller}
@@ -116,6 +136,7 @@ const BecomeSeller = () => {
               <option value="Fashion Seller">Fashion Seller</option>
               <option value="Home Appliance">Home Appliance</option>
               <option value="Beauty Seller">Beauty Seller</option>
+              <option value="Shoes Seller">Shoes Seller</option>
             </select>
 
             <input
@@ -130,7 +151,9 @@ const BecomeSeller = () => {
               type="submit"
               disabled={loading}
               className={`w-full bg-yellow-500 text-white py-2 rounded-lg font-semibold transition ${
-                loading ? "opacity-70 cursor-not-allowed" : "hover:bg-yellow-600"
+                loading
+                  ? "opacity-70 cursor-not-allowed"
+                  : "hover:bg-yellow-600"
               }`}
             >
               {loading ? "Processing..." : "Become Seller"}
@@ -146,5 +169,3 @@ const BecomeSeller = () => {
 };
 
 export default BecomeSeller;
-
-

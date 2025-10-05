@@ -30,14 +30,14 @@ const GroceryCustomerCard = ({ product, addToCart }) => {
           <button
             onClick={handleBuyNow}
             disabled={buying || isSeller}
-            className={`px-4 py-2 rounded-lg w-full sm:w-1/2 transition ${isSeller ? "bg-gray-400 cursor-not-allowed" : "bg-yellow-500 text-white hover:bg-yellow-600"}`}
+            className={`px-4 py-2 cursor-pointer rounded-lg w-full sm:w-1/2 transition ${isSeller ? "bg-gray-400 cursor-not-allowed" : "bg-yellow-500 text-white hover:bg-yellow-600"}`}
           >
             Buy Now
           </button>
           <button
             onClick={() => addToCart(product)}
             disabled={isSeller}
-            className={`px-4 py-2 rounded-lg w-full sm:w-1/2 transition ${isSeller ? "bg-gray-400 cursor-not-allowed" : "bg-green-500 text-white hover:bg-green-600"}`}
+            className={`px-4 py-2 cursor-pointer rounded-lg w-full sm:w-1/2 transition ${isSeller ? "bg-gray-400 cursor-not-allowed" : "bg-green-500 text-white hover:bg-green-600"}`}
           >
             Add to Cart
           </button>

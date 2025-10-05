@@ -16,7 +16,7 @@ const Navbar = () => {
   return (
     <nav className="bg-gray-800 shadow-md relative z-50">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-        <h1 className="text-white text-xl font-bold">AuthApp</h1>
+        <h1 className="text-white text-xl font-bold">ShopCart</h1>
 
         {/* Mobile Hamburger */}
         <div className="md:hidden">
@@ -112,7 +112,7 @@ const Navbar = () => {
               </Link>
               <button
                 onClick={handleLogout}
-                className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition"
+                className="bg-red-500 cursor-pointer text-white px-3 py-1 rounded hover:bg-red-600 transition"
               >
                 Logout
               </button>

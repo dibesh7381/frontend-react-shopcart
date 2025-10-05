@@ -18,6 +18,10 @@ import BeautySellerProducts from "./cards/BeautySellerProducts ";
 import AddGroceryProduct from "./forms/AddGroceryProduct";
 import GrocerySellerProducts from "./cards/GrocerySellerProducts";
 
+// ✅ New Imports for Shoes Seller
+import AddShoesProduct from "./forms/AddShoesProduct";
+import ShoesSellerProducts from "./cards/ShoesSellerProducts";
+
 const BACKEND_URL = "http://localhost:8080/auth";
 
 const SellerDashboard = () => {
@@ -156,6 +160,19 @@ const SellerDashboard = () => {
               </div>
             </ProductProvider>
           )}
+
+          {/* ✅ Shoes Seller */}
+          {shop.shopType === "Shoes Seller" && token && (
+            <ProductProvider user={user} token={token}>
+              <AddShoesProduct />
+              <div className="mt-6 w-full">
+                <h2 className="text-xl font-bold mb-4 text-center">
+                  Your Shoes Products
+                </h2>
+                <ShoesSellerProducts />
+              </div>
+            </ProductProvider>
+          )}
         </>
       )}
     </div>
@@ -163,3 +180,4 @@ const SellerDashboard = () => {
 };
 
 export default SellerDashboard;
+

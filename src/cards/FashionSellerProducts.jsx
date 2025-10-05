@@ -185,13 +185,13 @@ const FashionSellerProducts = () => {
 
                 <div className="flex gap-2 mt-3">
                   <button
-                    className="flex-1 bg-green-500 text-white py-2 rounded-lg hover:bg-green-600"
+                    className="flex-1 cursor-pointer bg-green-500 text-white py-2 rounded-lg hover:bg-green-600"
                     onClick={() => submitEdit(product.id)}
                   >
                     Save
                   </button>
                   <button
-                    className="flex-1 bg-gray-300 text-black py-2 rounded-lg hover:bg-gray-400"
+                    className="flex-1 cursor-pointer bg-gray-300 text-black py-2 rounded-lg hover:bg-gray-400"
                     onClick={() => setEditingId(null)}
                   >
                     Cancel
@@ -209,13 +209,13 @@ const FashionSellerProducts = () => {
 
                 <div className="flex gap-2 mt-3">
                   <button
-                    className="flex-1 bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600"
+                    className="flex-1 cursor-pointer bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600"
                     onClick={() => startEdit(product)}
                   >
                     Edit
                   </button>
                   <button
-                    className="flex-1 bg-red-500 text-white py-2 rounded-lg hover:bg-red-600"
+                    className="flex-1 cursor-pointer bg-red-500 text-white py-2 rounded-lg hover:bg-red-600"
                     onClick={() => deleteProduct(product.id)}
                   >
                     Delete

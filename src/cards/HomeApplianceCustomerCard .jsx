@@ -42,7 +42,7 @@ const HomeApplianceCustomerCard = ({ product, addToCart }) => {
           <button
             onClick={handleBuyNow}
             disabled={buying || isSeller} // 👈 disable if seller
-            className={`px-4 py-2 rounded-lg w-full sm:w-1/2 transition ${
+            className={`px-4 cursor-pointer py-2 rounded-lg w-full sm:w-1/2 transition ${
               isSeller
                 ? "bg-gray-400 cursor-not-allowed"
                 : "bg-yellow-500 text-white hover:bg-yellow-600"
@@ -53,7 +53,7 @@ const HomeApplianceCustomerCard = ({ product, addToCart }) => {
           <button
             onClick={() => addToCart(product)}
             disabled={isSeller} // 👈 disable if seller
-            className={`px-4 py-2 rounded-lg w-full sm:w-1/2 transition ${
+            className={`px-4 cursor-pointer py-2 rounded-lg w-full sm:w-1/2 transition ${
               isSeller
                 ? "bg-gray-400 cursor-not-allowed"
                 : "bg-green-500 text-white hover:bg-green-600"

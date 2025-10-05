@@ -16,6 +16,7 @@ const FashionCustomerCard = ({ product, addToCart }) => {
 
   return (
     <div className="bg-white rounded-3xl shadow-lg hover:shadow-2xl transition flex flex-col w-full max-w-sm mx-auto">
+      {/* Image */}
       <div className="h-64 w-full overflow-hidden rounded-t-3xl bg-gray-100 flex items-center justify-center">
         {product.imageUrl ? (
           <img
@@ -28,19 +29,28 @@ const FashionCustomerCard = ({ product, addToCart }) => {
         )}
       </div>
 
+      {/* Details */}
       <div className="p-5 flex flex-col flex-1">
-        <h3 className="text-2xl font-semibold">{product.brand}</h3>
-        <p>Type: {product.productType}</p>
-        <p>Size: {product.size}</p>
-        <p>Color: {product.color}</p>
-        <p>Qty: {product.quantity}</p>
+        {/* Brand + Category */}
+        <h3 className="text-2xl font-semibold text-gray-800">
+          {product.brand}{" "}
+          <span className="text-gray-500 text-lg font-normal">
+            | {product.category || "Unisex"}
+          </span>
+        </h3>
+
+        <p className="text-gray-600">Type: {product.productType}</p>
+        <p className="text-gray-600">Size: {product.size}</p>
+        <p className="text-gray-600">Color: {product.color}</p>
+        <p className="text-gray-600">Qty: {product.quantity}</p>
         <p className="font-bold mt-2">₹ {product.price}</p>
 
+        {/* Buttons */}
         <div className="mt-auto flex gap-2 pt-4">
           <button
             onClick={handleBuyNow}
             disabled={buying || isSeller}
-            className={`flex-1 py-2 rounded-lg transition ${
+            className={`flex-1 cursor-pointer py-2 rounded-lg transition ${
               isSeller
                 ? "bg-gray-400 cursor-not-allowed"
                 : "bg-yellow-500 text-white hover:bg-yellow-600"
@@ -51,7 +61,7 @@ const FashionCustomerCard = ({ product, addToCart }) => {
           <button
             onClick={() => addToCart(product)}
             disabled={isSeller}
-            className={`flex-1 py-2 rounded-lg transition ${
+            className={`flex-1 cursor-pointer py-2 rounded-lg transition ${
               isSeller
                 ? "bg-gray-400 cursor-not-allowed"
                 : "bg-green-500 text-white hover:bg-green-600"
