@@ -110,9 +110,7 @@ const Navbar = () => {
           <Link to="/all-products" className="text-gray-200 hover:text-white transition" onClick={() => setIsOpen(false)}>All Products</Link>
 
           {/* Mobile Cart: Only customer */}
-          {user?.role === "customer" && (
-            <Link to="/cart" className="relative text-gray-200 text-3xl hover:text-white transition" onClick={() => setIsOpen(false)}>🛒</Link>
-          )}
+         
 
           {!user ? (
             <>
