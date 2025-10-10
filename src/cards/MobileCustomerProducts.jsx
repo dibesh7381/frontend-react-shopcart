@@ -31,17 +31,19 @@ const MobileCustomerProducts = ({ products, addToCart }) => {
             <p className="text-gray-600">{product.model}</p>
             <p className="text-gray-600">Color: {product.color}</p>
             <p className="text-gray-800 font-bold mt-2">₹ {product.price}</p>
+            <p className="text-gray-600 mt-1">Available Stocks: {product.quantity}</p> {/* ✅ Live Quantity */}
 
             {/* Buttons */}
             <div className="mt-auto flex flex-col sm:flex-row justify-between items-center pt-4 gap-2">
               <button
                 onClick={() => {
+                  if (product.quantity <= 0) return;
                   addToCart(product);
                   alert(`🎉 ${product.brand} ${product.model} added to cart!`);
                 }}
-                disabled={isSeller}
+                disabled={isSeller || product.quantity <= 0} // ✅ Disable if seller or out of stock
                 className={`px-4 cursor-pointer py-2 rounded-lg w-full sm:w-1/2 transition ${
-                  isSeller
+                  isSeller || product.quantity <= 0
                     ? "bg-gray-400 cursor-not-allowed"
                     : "bg-yellow-500 text-white hover:bg-yellow-600"
                 }`}
@@ -50,9 +52,9 @@ const MobileCustomerProducts = ({ products, addToCart }) => {
               </button>
               <button
                 onClick={() => addToCart(product)}
-                disabled={isSeller}
+                disabled={isSeller || product.quantity <= 0} // ✅ Disable if seller or out of stock
                 className={`px-4 py-2 cursor-pointer rounded-lg w-full sm:w-1/2 transition ${
-                  isSeller
+                  isSeller || product.quantity <= 0
                     ? "bg-gray-400 cursor-not-allowed"
                     : "bg-green-500 text-white hover:bg-green-600"
                 }`}

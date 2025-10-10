@@ -12,12 +12,12 @@ const AddHomeApplianceProduct = () => {
     color: "",
     productType: "", 
     price: "",
+    quantity: 1, // ✅ Quantity added
     image: null,
   });
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
-  // Ref for file input
   const fileInputRef = useRef(null);
 
   const handleChange = (e) => {
@@ -39,9 +39,10 @@ const AddHomeApplianceProduct = () => {
       !form.color ||
       !form.productType ||
       !form.price ||
+      !form.quantity || // ✅ check quantity
       !form.image
     ) {
-      setError("Please fill all fields and select an image.");
+      setError("Please fill all fields, select an image, and set quantity.");
       return;
     }
 
@@ -51,6 +52,7 @@ const AddHomeApplianceProduct = () => {
     formData.append("color", form.color);
     formData.append("productType", form.productType);
     formData.append("price", form.price);
+    formData.append("quantity", form.quantity); // ✅ append quantity
     formData.append("image", form.image);
 
     try {
@@ -66,13 +68,10 @@ const AddHomeApplianceProduct = () => {
 
       if (res.ok && data.success) {
         setMessage("🎉 Product added successfully!");
-        setForm({ brand: "", model: "", color: "", productType: "", price: "", image: null });
+        setForm({ brand: "", model: "", color: "", productType: "", price: "", quantity: 1, image: null });
         addProduct(data.data);
 
-        // ✅ Reset file input manually
-        if (fileInputRef.current) {
-          fileInputRef.current.value = "";
-        }
+        if (fileInputRef.current) fileInputRef.current.value = "";
       } else {
         setError(data.message || "Failed to add product.");
       }
@@ -140,11 +139,22 @@ const AddHomeApplianceProduct = () => {
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
 
+          {/* ✅ Quantity input */}
+          <input
+            type="number"
+            name="quantity"
+            min={1}
+            placeholder="Quantity"
+            value={form.quantity}
+            onChange={handleChange}
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          />
+
           <input
             type="file"
             name="image"
             accept="image/*"
-            ref={fileInputRef} // ✅ Add ref here
+            ref={fileInputRef}
             onChange={handleChange}
             className="w-full text-gray-700"
           />

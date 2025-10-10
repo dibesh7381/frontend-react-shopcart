@@ -192,7 +192,7 @@ const ShoesSellerProducts = () => {
                 <p className="text-gray-600">Type: {product.productType}</p>
                 <p className="text-gray-600">Shoe Size: {product.shoeSize}</p>
                 <p className="text-gray-600">Color: {product.color}</p>
-                <p className="text-gray-600">Qty: {product.quantity}</p>
+                <p className="text-gray-600">Available Stocks: {product.quantity}</p>
                 <p className="text-gray-800 font-bold mt-2">₹ {product.price}</p>
 
                 <div className="mt-auto flex flex-col sm:flex-row justify-between items-center pt-4 gap-2">

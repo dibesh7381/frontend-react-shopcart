@@ -9,6 +9,7 @@ const GrocerySellerProducts = () => {
     brand: "",
     productType: "",
     price: "",
+    quantity: 0, // ✅ Quantity field
     image: null,
   });
   const fileInputRef = useRef(null);
@@ -19,6 +20,7 @@ const GrocerySellerProducts = () => {
       brand: product.brand,
       productType: product.productType,
       price: product.price,
+      quantity: product.quantity, // ✅ Pre-fill current quantity
       image: null,
     });
   };
@@ -36,6 +38,7 @@ const GrocerySellerProducts = () => {
     formData.append("brand", editForm.brand);
     formData.append("productType", editForm.productType);
     formData.append("price", editForm.price);
+    formData.append("quantity", editForm.quantity); // ✅ Append quantity
     if (editForm.image) formData.append("image", editForm.image);
 
     try {
@@ -113,6 +116,15 @@ const GrocerySellerProducts = () => {
                     onChange={handleEditChange}
                     className="border p-2 rounded w-full mb-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   />
+                  {/* ✅ Quantity input */}
+                  <input
+                    name="quantity"
+                    value={editForm.quantity}
+                    type="number"
+                    min={0}
+                    onChange={handleEditChange}
+                    className="border p-2 rounded w-full mb-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  />
                   <input
                     type="file"
                     name="image"
@@ -140,6 +152,7 @@ const GrocerySellerProducts = () => {
                   <h3 className="text-2xl font-semibold text-gray-800">{product.brand}</h3>
                   <p className="text-gray-600">Type: {product.productType}</p>
                   <p className="text-gray-800 font-bold mt-2">₹ {product.price}</p>
+                  <p className="text-gray-600 mt-1">Available Stocks: {product.quantity}</p> {/* ✅ Show live quantity */}
                   <div className="mt-auto flex flex-col sm:flex-row justify-between items-center pt-4 gap-2">
                     <button
                       className="px-4 cursor-pointer py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition w-full sm:w-1/2"

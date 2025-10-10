@@ -9,6 +9,7 @@ const BeautySellerProducts = () => {
     brand: "",
     productType: "",
     price: "",
+    quantity: 1, // ✅ add quantity field
     image: null,
   });
 
@@ -20,6 +21,7 @@ const BeautySellerProducts = () => {
       brand: product.brand,
       productType: product.productType,
       price: product.price,
+      quantity: product.quantity || 1, // ✅ initialize quantity
       image: null,
     });
   };
@@ -37,6 +39,7 @@ const BeautySellerProducts = () => {
     formData.append("brand", editForm.brand);
     formData.append("productType", editForm.productType);
     formData.append("price", editForm.price);
+    formData.append("quantity", editForm.quantity); // ✅ append quantity
     if (editForm.image) formData.append("image", editForm.image);
 
     try {
@@ -122,6 +125,16 @@ const BeautySellerProducts = () => {
                     className="border p-2 rounded w-full mb-2 focus:outline-none focus:ring-2 focus:ring-pink-500"
                   />
 
+                  {/* ✅ Quantity input */}
+                  <input
+                    name="quantity"
+                    type="number"
+                    min={1}
+                    value={editForm.quantity}
+                    onChange={handleEditChange}
+                    className="border p-2 rounded w-full mb-2 focus:outline-none focus:ring-2 focus:ring-pink-500"
+                  />
+
                   <input
                     name="image"
                     type="file"
@@ -151,6 +164,8 @@ const BeautySellerProducts = () => {
                   <h3 className="text-2xl font-semibold text-gray-800">{product.brand}</h3>
                   <p className="text-gray-600">Type: {product.productType}</p>
                   <p className="text-gray-800 font-bold mt-2">₹ {product.price}</p>
+                  {/* ✅ Show current quantity */}
+                  <p className="text-gray-700 mt-1">Available Stocks: {product.quantity || 1}</p>
 
                   <div className="mt-auto flex flex-col sm:flex-row justify-between items-center pt-4 gap-2">
                     <button

@@ -204,7 +204,7 @@ const FashionSellerProducts = () => {
                 <p>Type: {product.productType}</p>
                 <p>Size: {product.size}</p>
                 <p>Color: {product.color}</p>
-                <p>Qty: {product.quantity}</p>
+                <p>Available Stocks: {product.quantity}</p>
                 <p className="font-bold">₹ {product.price}</p>
 
                 <div className="flex gap-2 mt-3">

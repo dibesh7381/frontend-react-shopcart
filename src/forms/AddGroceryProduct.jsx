@@ -10,6 +10,7 @@ const AddGroceryProduct = () => {
     brand: "",
     productType: "",
     price: "",
+    quantity: 1, // ✅ quantity field added
     image: null,
   });
 
@@ -30,8 +31,8 @@ const AddGroceryProduct = () => {
     setMessage("");
     setError("");
 
-    if (!form.brand || !form.productType || !form.price || !form.image) {
-      setError("Please fill all fields and select an image.");
+    if (!form.brand || !form.productType || !form.price || !form.image || !form.quantity) {
+      setError("Please fill all fields, select an image, and set quantity.");
       return;
     }
 
@@ -39,6 +40,7 @@ const AddGroceryProduct = () => {
     formData.append("brand", form.brand);
     formData.append("productType", form.productType);
     formData.append("price", form.price);
+    formData.append("quantity", form.quantity); // ✅ append quantity
     formData.append("image", form.image);
 
     try {
@@ -51,7 +53,7 @@ const AddGroceryProduct = () => {
       if (res.ok && data.success) {
         addProduct(data.data);
         setMessage("🎉 Product added successfully!");
-        setForm({ brand: "", productType: "", price: "", image: null });
+        setForm({ brand: "", productType: "", price: "", quantity: 1, image: null });
         if (fileInputRef.current) fileInputRef.current.value = "";
       } else {
         setError(data.message || "Failed to add product.");
@@ -100,6 +102,18 @@ const AddGroceryProduct = () => {
             onChange={handleChange}
             className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
+
+          {/* ✅ Quantity input */}
+          <input
+            type="number"
+            name="quantity"
+            min={1}
+            placeholder="Quantity"
+            value={form.quantity}
+            onChange={handleChange}
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          />
+
           <input
             type="file"
             name="image"
@@ -115,9 +129,7 @@ const AddGroceryProduct = () => {
             Add Product
           </button>
         </form>
-        {message && (
-          <p className="mt-4 text-center text-green-600">{message}</p>
-        )}
+        {message && <p className="mt-4 text-center text-green-600">{message}</p>}
         {error && <p className="mt-4 text-center text-red-500">{error}</p>}
       </div>
     </div>

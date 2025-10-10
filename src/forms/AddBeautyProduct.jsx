@@ -10,6 +10,7 @@ const AddBeautyProduct = () => {
     brand: "",
     productType: "",
     price: "",
+    quantity: 1, // ✅ default quantity 1
     image: null,
   });
   const [message, setMessage] = useState("");
@@ -30,7 +31,7 @@ const AddBeautyProduct = () => {
     setMessage("");
     setError("");
 
-    if (!form.brand || !form.productType || !form.price || !form.image) {
+    if (!form.brand || !form.productType || !form.price || !form.image || !form.quantity) {
       setError("Please fill all fields and select an image.");
       return;
     }
@@ -39,6 +40,7 @@ const AddBeautyProduct = () => {
     formData.append("brand", form.brand);
     formData.append("productType", form.productType);
     formData.append("price", form.price);
+    formData.append("quantity", form.quantity); // ✅ append quantity
     formData.append("image", form.image);
 
     try {
@@ -52,7 +54,7 @@ const AddBeautyProduct = () => {
 
       if (res.ok && data.success) {
         setMessage("🎉 Product added successfully!");
-        setForm({ brand: "", productType: "", price: "", image: null });
+        setForm({ brand: "", productType: "", price: "", quantity: 1, image: null });
         addProduct(data.data);
 
         if (fileInputRef.current) fileInputRef.current.value = "";
@@ -107,6 +109,16 @@ const AddBeautyProduct = () => {
           />
 
           <input
+            type="number"
+            name="quantity" // ✅ new input for quantity
+            placeholder="Quantity"
+            value={form.quantity}
+            min={1}
+            onChange={handleChange}
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+          />
+
+          <input
             type="file"
             name="image"
             accept="image/*"
@@ -131,3 +143,4 @@ const AddBeautyProduct = () => {
 };
 
 export default AddBeautyProduct;
+

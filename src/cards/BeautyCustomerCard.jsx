@@ -35,6 +35,9 @@ const BeautyCustomerCard = ({ product, addToCart }) => {
         <p className="text-gray-600">Type: {product.productType}</p>
         <p className="text-gray-800 font-bold mt-2">₹ {product.price}</p>
 
+        {/* ✅ Show current quantity */}
+        <p className="text-gray-700 mt-1">Available Stocks: {product.quantity || 1}</p>
+
         {/* Buttons */}
         <div className="mt-auto flex flex-col sm:flex-row justify-between items-center pt-4 gap-2">
           <button
@@ -66,3 +69,4 @@ const BeautyCustomerCard = ({ product, addToCart }) => {
 };
 
 export default BeautyCustomerCard;
+

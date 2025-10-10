@@ -37,7 +37,7 @@ const ShoesCustomerCard = ({ product, addToCart }) => {
         <p className="text-gray-600">{product.productType}</p>
         <p className="text-gray-600">Shoe Size: {product.shoeSize}</p>
         <p className="text-gray-600">Color: {product.color}</p>
-        <p className="text-gray-600">Qty: {product.quantity}</p>
+        <p className="text-gray-600">Available Stocks: {product.quantity}</p>
         <p className="font-bold text-lg mt-2">₹ {product.price}</p>
 
         {/* Buttons */}

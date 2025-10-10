@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useRef } from "react";
 import { ProductContext } from "../contexts/ProductContext";
 import Loader from "../Loader";
 
@@ -11,7 +11,10 @@ const HomeApplianceSellerProducts = () => {
     color: "",
     productType: "",
     price: "",
+    quantity: 0, // ✅ Quantity field
   });
+  // eslint-disable-next-line no-unused-vars
+  const fileInputRef = useRef(null);
 
   const startEdit = (product) => {
     setEditingId(product.id);
@@ -21,6 +24,7 @@ const HomeApplianceSellerProducts = () => {
       color: product.color,
       productType: product.productType,
       price: product.price,
+      quantity: product.quantity, // ✅ Pre-fill current quantity
     });
   };
 
@@ -35,6 +39,7 @@ const HomeApplianceSellerProducts = () => {
     formData.append("color", editForm.color);
     formData.append("productType", editForm.productType);
     formData.append("price", editForm.price);
+    formData.append("quantity", editForm.quantity); // ✅ Send quantity to backend
 
     try {
       const res = await fetch(`http://localhost:8080/auth/update-product/${id}`, {
@@ -69,7 +74,6 @@ const HomeApplianceSellerProducts = () => {
             key={product.id}
             className="bg-white rounded-3xl shadow-lg hover:shadow-2xl transition flex flex-col w-full max-w-sm mx-auto"
           >
-            {/* Image */}
             <div className="h-64 w-full overflow-hidden rounded-t-3xl bg-gray-100 flex items-center justify-center">
               {product.imageUrl ? (
                 <img
@@ -82,7 +86,6 @@ const HomeApplianceSellerProducts = () => {
               )}
             </div>
 
-            {/* Details */}
             <div className="p-5 flex flex-col flex-1">
               {editingId === product.id ? (
                 <>
@@ -120,8 +123,17 @@ const HomeApplianceSellerProducts = () => {
                   <input
                     name="price"
                     value={editForm.price}
-                    onChange={handleEditChange}
                     type="number"
+                    onChange={handleEditChange}
+                    className="border p-2 rounded w-full mb-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  />
+                  {/* ✅ Quantity input */}
+                  <input
+                    name="quantity"
+                    value={editForm.quantity}
+                    type="number"
+                    min={0}
+                    onChange={handleEditChange}
                     className="border p-2 rounded w-full mb-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   />
                   <div className="flex flex-col sm:flex-row justify-between mt-3 gap-2">
@@ -146,6 +158,7 @@ const HomeApplianceSellerProducts = () => {
                   <p className="text-gray-600">Color: {product.color}</p>
                   <p className="text-gray-600">Type: {product.productType}</p>
                   <p className="text-gray-800 font-bold mt-2">₹ {product.price}</p>
+                  <p className="text-gray-600 mt-1">Available Stocks: {product.quantity}</p> {/* ✅ Live Quantity */}
                   <div className="mt-auto flex flex-col sm:flex-row justify-between items-center pt-4 gap-2">
                     <button
                       className="px-4 cursor-pointer py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition w-full sm:w-1/2"
