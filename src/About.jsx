@@ -10,11 +10,11 @@ const About = () => {
       try {
         const res = await fetch("http://localhost:8080/auth/about");
         const json = await res.json();
-        setInfo(json); // backend me data field me about info aa raha hai
+        setInfo(json);
       } catch (err) {
         console.log(err);
       }finally {
-        setLoading(false); // ✅ stop loader after fetch
+        setLoading(false); 
       }
     };
     fetchAbout();

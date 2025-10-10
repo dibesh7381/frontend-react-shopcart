@@ -1,17 +1,34 @@
+// src/components/BeautyCustomerCard.js
 import { useState, useContext } from "react";
+import { useDispatch } from "react-redux";
 import { AuthContext } from "../contexts/AuthContext";
+import { addToCart } from "../redux/cartSlice";
 
-const BeautyCustomerCard = ({ product, addToCart }) => {
+const BeautyCustomerCard = ({ product }) => {
   const [buying, setBuying] = useState(false);
-  const { user } = useContext(AuthContext);
+  const { user, token } = useContext(AuthContext);
+  const dispatch = useDispatch();
 
   const isSeller = user?.role === "seller";
 
-  const handleBuyNow = () => {
+  const handleBuyNow = async () => {
+    if (!token) {
+      alert("Please login to buy products!");
+      return;
+    }
     setBuying(true);
-    addToCart(product);
+    await dispatch(addToCart({ productId: product.id, token }));
     alert(`🎉 ${product.brand} added to cart!`);
     setBuying(false);
+  };
+
+  const handleAddToCart = async () => {
+    if (!token) {
+      alert("Please login to add products to cart!");
+      return;
+    }
+    await dispatch(addToCart({ productId: product.id, token }));
+    alert(`🛒 ${product.brand} added to cart!`);
   };
 
   return (
@@ -34,8 +51,6 @@ const BeautyCustomerCard = ({ product, addToCart }) => {
         <h3 className="text-2xl font-semibold text-gray-800">{product.brand}</h3>
         <p className="text-gray-600">Type: {product.productType}</p>
         <p className="text-gray-800 font-bold mt-2">₹ {product.price}</p>
-
-        {/* ✅ Show current quantity */}
         <p className="text-gray-700 mt-1">Available Stocks: {product.quantity || 1}</p>
 
         {/* Buttons */}
@@ -52,7 +67,7 @@ const BeautyCustomerCard = ({ product, addToCart }) => {
             Buy Now
           </button>
           <button
-            onClick={() => addToCart(product)}
+            onClick={handleAddToCart}
             disabled={isSeller}
             className={`px-4 py-2 cursor-pointer rounded-lg w-full sm:w-1/2 transition ${
               isSeller
@@ -69,4 +84,3 @@ const BeautyCustomerCard = ({ product, addToCart }) => {
 };
 
 export default BeautyCustomerCard;
-

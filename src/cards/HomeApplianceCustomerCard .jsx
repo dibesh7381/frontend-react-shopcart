@@ -1,17 +1,37 @@
+// src/components/HomeApplianceCustomerCard.js
 import { useState, useContext } from "react";
+import { useDispatch } from "react-redux";
 import { AuthContext } from "../contexts/AuthContext";
+import { addToCart } from "../redux/cartSlice";
 
-const HomeApplianceCustomerCard = ({ product, addToCart }) => {
+const HomeApplianceCustomerCard = ({ product }) => {
   const [buying, setBuying] = useState(false);
-  const { user } = useContext(AuthContext);
+  const { user, token } = useContext(AuthContext);
+  const dispatch = useDispatch();
   const isSeller = user?.role === "seller";
 
-  const handleBuyNow = () => {
-    if (product.quantity <= 0) return; // ✅ stock check
+  const handleBuyNow = async () => {
+    if (!token) {
+      alert("Please login to buy products!");
+      return;
+    }
+    if (product.quantity <= 0) return;
+
     setBuying(true);
-    addToCart(product);
+    await dispatch(addToCart({ productId: product.id, token }));
     alert(`🎉 ${product.brand} ${product.model} added to cart!`);
     setBuying(false);
+  };
+
+  const handleAddToCart = async () => {
+    if (!token) {
+      alert("Please login to add products to cart!");
+      return;
+    }
+    if (product.quantity <= 0) return;
+
+    await dispatch(addToCart({ productId: product.id, token }));
+    alert(`🛒 ${product.brand} ${product.model} added to cart!`);
   };
 
   return (
@@ -34,12 +54,12 @@ const HomeApplianceCustomerCard = ({ product, addToCart }) => {
         <p className="text-gray-600">Color: {product.color}</p>
         <p className="text-gray-600">Type: {product.productType}</p>
         <p className="text-gray-800 font-bold mt-2">₹ {product.price}</p>
-        <p className="text-gray-600 mt-1">Available Stocks: {product.quantity}</p> {/* ✅ Live Quantity */}
-        
+        <p className="text-gray-600 mt-1">Available Stocks: {product.quantity}</p>
+
         <div className="mt-auto flex flex-col sm:flex-row justify-between items-center pt-4 gap-2">
           <button
             onClick={handleBuyNow}
-            disabled={buying || isSeller || product.quantity <= 0} // Disable if seller or out of stock
+            disabled={buying || isSeller || product.quantity <= 0}
             className={`px-4 cursor-pointer py-2 rounded-lg w-full sm:w-1/2 transition ${
               isSeller || product.quantity <= 0
                 ? "bg-gray-400 cursor-not-allowed"
@@ -49,8 +69,8 @@ const HomeApplianceCustomerCard = ({ product, addToCart }) => {
             Buy Now
           </button>
           <button
-            onClick={() => addToCart(product)}
-            disabled={isSeller || product.quantity <= 0} // Disable if seller or out of stock
+            onClick={handleAddToCart}
+            disabled={isSeller || product.quantity <= 0}
             className={`px-4 cursor-pointer py-2 rounded-lg w-full sm:w-1/2 transition ${
               isSeller || product.quantity <= 0
                 ? "bg-gray-400 cursor-not-allowed"
